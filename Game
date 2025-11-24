@@ -1,0 +1,127 @@
+struct Game {
+    Board board;
+    vector<unique_ptr<Player>> players;
+    int currentPlayerIndex{0};
+    unique_ptr<Display> display1;
+    unique_ptr<Display> display2;
+    bool finished = false;
+    int numPlayers = 2;
+
+    Game(int nplayers=2) : numPlayers(nplayers) {
+        for (int i=0;i<numPlayers;i++) players.emplace_back(make_unique<Player>(i+1));
+        display1 = make_unique<struct TextDisplay>();
+        display2 = make_unique<struct TextDisplay>();
+    }
+
+    Player& currentPlayer() { return *players[currentPlayerIndex]; }
+    Player& otherPlayer() { return *players[(currentPlayerIndex+1)%numPlayers]; }
+
+    void nextTurn() { currentPlayerIndex = (currentPlayerIndex + 1) % numPlayers; }
+
+    void displayBoth() {
+        display1->render(board, *players[0]);
+        cout << "---------------------------\n";
+        display2->render(board, *players[1]);
+    }
+
+    bool executeMove(char linkId, const string &dirStr) {
+        Player &p = currentPlayer();
+        Link* link = p.getLinkByIdChar(linkId);
+        if (!link) { cout << "Invalid link id\n"; return false; }
+        Pos from;
+        if (!board.findLinkPos(link, from)) { cout << "Link not on board\n"; return false; }
+
+        // parse direction into delta
+        int dr=0, dc=0;
+        if (dirStr == "up") { dr=-1; dc=0; }
+        else if (dirStr == "down") { dr=1; dc=0; }
+        else if (dirStr == "left") { dr=0; dc=-1; }
+        else if (dirStr == "right") { dr=0; dc=1; }
+        else { cout << "Invalid direction\n"; return false; }
+
+        Pos to = from;
+        to.r += dr; to.c += dc;
+
+        if (link->isBoosted()) {
+            to.r += dr; to.c += dc;
+        }
+        if (link->isBreaching()) {
+            // breached allows extra 2 cells in same dir (one-turn)
+            to.r += 2*dr; to.c += 2*dc;
+            link->setBreached(false);
+        }
+        if (link->isReinforced()) {
+            cout << "This link is reinforced and cannot move this turn.\n";
+            link->setReinforced(false);
+            return false;
+        }
+
+        bool offEdge = !board.inBounds(to);
+        if (offEdge) {
+            // allowed only if moving off opponent starting edge
+            int pid = p.playerID;
+            // moving off top (r < 0) allowed if opponent started at top (player 1 started top)
+            // Interpret: moving off opponent's starting edge (the edge where opponent placed their links originally)
+            if (pid == 1 && to.r >= Board::R) {
+                // player1 moving off bottom (opponent start)
+            } else if (pid == 2 && to.r < 0) {
+                // player2 moving off top
+            } else {
+                cout << "Cannot move off that edge\n"; return false;
+            }
+            // handle download (moving off)
+            board.clearPos(from);
+            p.addDownloaded(link);
+            p.removeLink(link);
+            cout << p.getName() << " downloaded their own link by moving off opponent edge.\n";
+            return true;
+        }
+
+        Link* at = board.get(to);
+        if (!at) {
+            board.clearPos(from);
+            board.place(link, to);
+            cout << "Moved.\n";
+            return true;
+        } else {
+            if (at->getOwner() == &p) { cout << "Cannot move onto your own link.\n"; return false; }
+            bool initiatorWins = link->battle(*at, true);
+            Player *winner = initiatorWins ? &p : at->getOwner();
+            Player *loser = initiatorWins ? at->getOwner() : &p;
+            Link *loserLink = initiatorWins ? at : link;
+            Link *winnerLink = initiatorWins ? link : at;
+
+            board.clearPos(from); board.clearPos(to);
+            board.place(winnerLink, to);
+
+            winner->addDownloaded(loserLink);
+            loser->removeLink(loserLink);
+            loser->addAgainstMe(loserLink);
+            cout << winner->getName() << " wins battle and downloads opponent link.\n";
+            return true;
+        }
+    }
+
+    bool useAbility(int idx, const vector<string>& args) {
+        Player &p = currentPlayer();
+        if (idx < 1 || idx > (int)p.abilities.size()) { cout << "Invalid ability id\n"; return false; }
+        Ability* a = p.abilities[idx-1].get();
+        if (a->hasUsed()) { cout << "Ability already used\n"; return false; }
+        bool ok = a->use(*this, args);
+        if (ok) { a->markUsed(); cout << "Ability used: " << a->name() << "\n"; }
+        else cout << "Ability failed or canceled\n";
+        return ok;
+    }
+
+    Player* getPlayerById(int id) {
+        for (auto &pl : players) if (pl->playerID == id) return pl.get();
+        return nullptr;
+    }
+
+    void checkWinConditions() {
+        for (auto &pl : players) {
+            if (pl->downloadsData >= 4) { cout << pl->getName() << " wins by downloading 4 data!\n"; finished = true; }
+            else if (pl->downloadsVirus >= 4) { cout << pl->getName() << " loses (downloaded 4 viruses)!\n"; finished = true; }
+        }
+    }
+};
