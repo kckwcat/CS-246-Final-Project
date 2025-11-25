@@ -33,9 +33,9 @@ Virtual bool isVirus override(){
 }
 
 Void applyFirewall(pos){
-	if(firewalls[pos.x][pos.y] == ‘’){
-		firewalls[pos.x][pos.y] = ‘m’;
-		firewalls[pos.x][pos.y] = ‘w’;
+	if(firewalls[pos.r][pos.c] == ‘’){
+		firewalls[pos.r][pos.c] = ‘m’;
+		firewalls[pos.r][pos.c] = ‘w’;
 	} 
 }
 
