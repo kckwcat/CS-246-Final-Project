@@ -1,0 +1,65 @@
+bool isBreaching(){
+	if (isBoosted == false && isVirus() == true){
+		return true;
+	}
+	return false;
+}
+
+bool isReinforced(){
+	(if isBoosted == true && isData() == true){
+		return true;
+	}
+	return false;
+}
+
+bool isRejacked(){
+	(if isBoosted == true && isVirus() == true){
+		return true;
+	}
+	return false;
+}
+
+protected:
+void applyBoost(){
+	strength++;
+	isBoosted = true;
+}
+
+
+DataLink {
+Virtual bool isVirus override(){
+	
+}
+}
+
+Void applyFirewall(pos){
+	if(firewalls[pos.x][pos.y] == ‘’){
+		firewalls[pos.x][pos.y] = ‘m’;
+		firewalls[pos.x][pos.y] = ‘w’;
+	} 
+}
+
+
+This UML looks incomplete and hard to follow. 
+Import Game;
+bool isServer(Pos pos, int playerID){
+	for(int i=0; i< 8; i++){
+		if(i == playerID){
+			return true;
+		}
+	}
+	return false;
+}
+
+void display(){
+	for(int I=0; I<8; I++){
+		for(int j=0; j<8; j++){
+			cout << grid[i][j];
+		}	
+	}
+	for(int I=0; I<8; j++){
+		for(int j=0; j<8; j++){
+			cout << firewalls[i][j];
+		}
+	}
+}
