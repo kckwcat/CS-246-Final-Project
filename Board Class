@@ -43,8 +43,8 @@ Void applyFirewall(pos){
 This UML looks incomplete and hard to follow. 
 Import Game;
 bool isServer(Pos pos, int playerID){
-	for(int i=0; i< 8; i++){
-		if(i == playerID){
+	if(pos.r == playerID){
+		if(pos.c == 3 || pos.c == 4){
 			return true;
 		}
 	}
