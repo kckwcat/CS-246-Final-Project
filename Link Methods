@@ -1,0 +1,26 @@
+bool isBreaching(){
+	if (isBoosted == false && isVirus() == true){
+		return true;
+	}
+	return false;
+}
+
+bool isReinforced(){
+	(if isBoosted == true && isData() == true){
+		return true;
+	}
+	return false;
+}
+
+bool isRejacked(){
+	(if isBoosted == true && isVirus() == true){
+		return true;
+	}
+	return false;
+}
+
+protected:
+void applyBoost(){
+	strength++;
+	isBoosted = true;
+}
