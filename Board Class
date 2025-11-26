@@ -1,6 +1,7 @@
 class Board{
 Vector<Link*> player1;
 Vector<Link*> player2;
+ostream &out;
 
 public:
 bool isBreaching(){
@@ -23,20 +24,6 @@ bool isRejacked(){
 	}
 	return false;
 }
-
-protected:
-void applyBoost(){
-	strength++;
-	isBoosted = true;
-}
-
-
-DataLink {
-Virtual bool isVirus override(){
-	
-}
-}
-
 Void applyFirewall(pos){
 	if(firewalls[pos.r][pos.c] == ‘’){
 		firewalls[pos.r][pos.c] = ‘m’;
@@ -57,7 +44,7 @@ bool isServer(Pos pos, int playerID){
 }
 
 void display(){
-	for(int I=0; I<8; I++){
+	for(int i=0; i<8; i++){
 		for(int j=0; j<8; j++){
 			cout << grid[i][j];
 		}	
@@ -67,5 +54,10 @@ void display(){
 			cout << firewalls[i][j];
 		}
 	}
+}
+protected:
+void applyBoost(){
+	strength++;
+	isBoosted = true;
 }
 }
