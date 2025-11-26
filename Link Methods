@@ -1,26 +1,33 @@
-bool isBreaching(){
-	if (isBoosted == false && isVirus() == true){
-		return true;
+class Link{
+int strength;
+bool isBoosted;
+Link type;
+std::unique_pointer<Player> owner;
+public:
+	bool isBreaching(){
+		if (isBoosted == false && isVirus() == true){
+			return true;
+		}
+		return false;
 	}
-	return false;
-}
-
-bool isReinforced(){
-	(if isBoosted == true && isData() == true){
-		return true;
+	
+	bool isReinforced(){
+		(if isBoosted == true && isData() == true){
+			return true;
+		}
+		return false;
 	}
-	return false;
-}
-
-bool isRejacked(){
-	(if isBoosted == true && isVirus() == true){
-		return true;
+	
+	bool isRejacked(){
+		(if isBoosted == true && isVirus() == true){
+			return true;
+		}
+		return false;
 	}
-	return false;
-}
-
-protected:
-void applyBoost(){
-	strength++;
-	isBoosted = true;
+	
+	protected:
+	void applyBoost(){
+		strength++;
+		isBoosted = true;
+	}
 }
