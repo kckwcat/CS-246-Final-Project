@@ -4,6 +4,7 @@ import <vector>;
 import Ability;
 import Game;
 import player;
+using namespace std;
 FirewallAbility::FirewallAbility(Player* p=nullptr): Ability(p) {}
 string FirewallAbility::name() const { return "Firewall"; }
     bool FirewallAbility::use(Game &game, const vector<string>& args) {
