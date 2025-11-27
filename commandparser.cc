@@ -3,7 +3,7 @@ import <vector>;
 import <memory>;
 import <algorithm>;
 import Game;
-class Game{
+class commandParser{
     std::unique_ptr<Game> game;
     public:
     void abilitySequence(){
