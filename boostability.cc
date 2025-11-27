@@ -6,6 +6,7 @@ import <string>;
 import Ability;
 import Game;
 import player;
+using namespace std;
 export struct BoostAbility : public Ability {
     BoostAbility(Player* p=nullptr);
     string name() const override;
