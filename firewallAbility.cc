@@ -4,6 +4,7 @@ import <vector>;
 import Ability;
 import Game;
 import player;
+using namespace std;
 export struct FirewallAbility : public Ability {
     FirewallAbility(Player* p=nullptr);
     string name() const override;
