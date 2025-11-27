@@ -34,6 +34,7 @@ struct Link {
     // Note: public members here for simplicity; could be private with getters/setters.
     int strength;
     char type;          // 'D' or 'V' or '?'
+    Player* owner;
     bool boosted = false;
     bool breached = false;
     bool reinforced = false;
@@ -41,6 +42,8 @@ struct Link {
 
     Link(int s = 1, char t = TYPE_UNKNOWN, Player* o = nullptr)
         : strength(s), type(t), owner(o) {}
+
+    
 
     bool isVirus() const { return type == TYPE_VIRUS; }
     bool isData() const  { return type == TYPE_DATA; }
@@ -117,25 +120,24 @@ struct Board {
 };
 
 /* ------------------------
-   Display interface (kept minimal)
+   Ability base + concrete abilities
+   (Lightweight examples)
    ------------------------ */
-struct Display {
-    virtual ~Display() = default;
-    virtual void render(const Board &board, const Player &player, bool lowercase) const = 0;
+struct Ability {
+protected:
+    bool used = false;
+    Player* owner = nullptr;
+public:
+    Ability(Player* p=nullptr): used(false), owner(p) {}
+    virtual ~Ability() = default;
+    bool hasUsed() const { return used; }
+    void markUsed() { used = true; }
+    void setOwner(Player* p) { owner = p; }
+    Player* getOwner() const { return owner; }
+    virtual string name() const = 0;
+    virtual bool use(Game &game, const vector<string> &args) = 0;
 };
 
-struct TextDisplay : public Display {
-    void render(const Board &board, const Player &player, bool lowercase) const override {
-        board.displayForViewer(player, lowercase);
-    }
-};
-
-struct GraphicsDisplay : public Display {
-    void render(const Board &board, const Player &player, bool lowercase) const override {
-        cout << "[Graphics stub] rendering for " << player.getName() << "\n";
-        board.displayForViewer(player, lowercase);
-    }
-};
 
 /* ------------------------
    Player
@@ -183,24 +185,29 @@ struct Player {
     bool hasLost() const { return downloadsVirus >= 4; }
 };
 
+
 /* ------------------------
-   Ability base + concrete abilities
-   (Lightweight examples)
+   Display interface (kept minimal)
    ------------------------ */
-struct Ability {
-protected:
-    bool used = false;
-    Player* owner = nullptr;
-public:
-    Ability(Player* p=nullptr): used(false), owner(p) {}
-    virtual ~Ability() = default;
-    bool hasUsed() const { return used; }
-    void markUsed() { used = true; }
-    void setOwner(Player* p) { owner = p; }
-    Player* getOwner() const { return owner; }
-    virtual string name() const = 0;
-    virtual bool use(Game &game, const vector<string> &args) = 0;
+struct Display {
+    virtual ~Display() = default;
+    virtual void render(const Board &board, const Player &player, bool lowercase) const = 0;
 };
+
+struct TextDisplay : public Display {
+    void render(const Board &board, const Player &player, bool lowercase) const override {
+        board.displayForViewer(player, lowercase);
+    }
+};
+
+struct GraphicsDisplay : public Display {
+    void render(const Board &board, const Player &player, bool lowercase) const override {
+        cout << "[Graphics stub] rendering for " << player.getName() << "\n";
+        board.displayForViewer(player, lowercase);
+    }
+};
+
+
 
 /* Forward declarations for ability concrete implementations */
 struct BoostAbility;
@@ -317,14 +324,14 @@ struct Game {
             cout << "Moved " << linkId << " to (" << to.r << "," << to.c << ")\n";
             return true;
         } else {
-            if (occ->get()->owner == &p) {
+            if (occ->owner == &p) {
                 cout << "Cannot move onto your own link\n";
                 return false;
             }
             // battle
-            bool initiatorWins = link->battleVs(*occ->get(), true);
-            Player *winner = initiatorWins ? &p : occ->get()->owner;
-            Player *loser  = initiatorWins ? occ->get()->owner : &p;
+            bool initiatorWins = link->battleVs(*occ, true);
+            Player *winner = initiatorWins ? dynamic_cast<Player *>(&p) : static_cast<Player *>(occ->owner);
+            Player *loser  = initiatorWins ? occ->owner : &p;
             shared_ptr<Link> winnerLink = initiatorWins ? link : occ;
             shared_ptr<Link> loserLink  = initiatorWins ? occ : link;
 
@@ -391,8 +398,8 @@ void Board::displayForViewer(const Player &viewer, bool player2Lowercase) const 
             string cell = " . ";
             if (fw) cell = string(1,fw) + "  ";
             else if (L) {
-                if (L->get()->owner == &viewer) {
-                    cell = L->get()->shortLabel();
+                if (L->owner == &viewer) {
+                    cell = L->shortLabel();
                     // optionally show lowercase for player2's view
                     if (player2Lowercase && viewer.playerID == 2) {
                         // make letters lowercase
@@ -473,7 +480,7 @@ struct ScanAbility : public Ability {
         for (auto &pl : game.players) {
             auto cand = pl->getLinkByIdChar(ch);
             if (cand) {
-                cout << "Scan result: Owner=" << pl->get()->getName() << " Type=" << (cand->isVirus() ? "Virus" : "Data") << " Str=" << cand->strength << "\n";
+                cout << "Scan result: Owner=" << pl->getName() << " Type=" << (cand->isVirus() ? "Virus" : "Data") << " Str=" << cand->strength << "\n";
                 return true;
             }
         }
@@ -503,8 +510,6 @@ struct PolarizeAbility : public Ability {
         for (auto &pl : game.players) {
             auto cand = pl->getLinkByIdChar(args[0][0]);
             if (cand) {
-                cand->toggleType(); // but Link has no toggle method in this minimal class -> implement via direct change
-                // We'll implement toggle here:
                 if (cand->type == TYPE_DATA) cand->type = TYPE_VIRUS; else if (cand->type == TYPE_VIRUS) cand->type = TYPE_DATA;
                 cout << "Polarized\n";
                 return true;
