@@ -6,6 +6,7 @@ import Ability;
 import Link;
 import Game;
 import player;
+using namespace std;
 
 DownloadAbility::DownloadAbility(Player* p=nullptr): Ability(p) {}
 string DownloadAbility::name() const { return "Download"; }
