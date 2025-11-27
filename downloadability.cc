@@ -6,6 +6,7 @@ import Ability;
 import Game;
 import Link;
 import player;
+using namespace std;
 export struct DownloadAbility : public Ability {
     DownloadAbility(Player* p=nullptr);
     string name() const override;
