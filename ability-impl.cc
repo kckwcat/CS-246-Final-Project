@@ -25,3 +25,4 @@ void Ability::setOwner(Player* p){
 Player* Ability::getOwner() const{
     return owner;
 }
+
