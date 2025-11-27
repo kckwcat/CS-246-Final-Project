@@ -1,4 +1,4 @@
-export module ScanAbility;
+module BreachAbility;
 import <iostream>;
 import <memory>;
 import <string>;
