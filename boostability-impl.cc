@@ -6,6 +6,7 @@ import <string>;
 import Ability;
 import Game;
 import player;
+using namespace std;
 
 BoostAbility::BoostAbility(Player* p=nullptr): Ability(p) {}
 
