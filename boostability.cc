@@ -4,6 +4,7 @@ import <memory>;
 import <vector>;
 import <string>;
 import Ability;
+import Game;
 import player;
 export struct BoostAbility : public Ability {
     BoostAbility(Player* p=nullptr);
