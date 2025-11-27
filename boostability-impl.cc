@@ -4,6 +4,7 @@ import <memory>;
 import <vector>;
 import <string>;
 import Ability;
+import Game;
 import player;
 
 BoostAbility::BoostAbility(Player* p=nullptr): Ability(p) {}
