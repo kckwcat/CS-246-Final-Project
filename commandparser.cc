@@ -3,9 +3,13 @@ import <vector>;
 import <memory>;
 import <algorithm>;
 import Game;
+using namespace std;
 class commandParser{
     std::unique_ptr<Game> game;
     public:
+	commandParser(){
+		game = make_unique<Game>();
+	}
     void abilitySequence(){
 	game->getCurrentPlayer().playAbility();
     }
