@@ -19,11 +19,12 @@ export class Player {
     public:
 
     Player(int id=0);
-
+    int getPlayerID() const;
     string getName() const;
     
     // getLinkByIdChar(char c): returns a link by it's ID
     shared_ptr<Link> getLinkByIdChar(char ch);
+    /*vector<unique_ptr<Ability>> getAbilities(); */
 
     void addDownloaded(shared_ptr<Link> L);
     void addAgainstMe(shared_ptr<Link> L);
