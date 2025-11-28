@@ -9,6 +9,7 @@ Link::Link(int s = 1, char t = 'D') : strength(s), type(t) {}
 
 //Player* Link::getPlayer() const{ return owner;}
 int Link::getPlayerID() const {return playerID;}
+char Link::getType() const{return type;}
 
 bool Link::isVirus() const { return type == 'V'; }
     
