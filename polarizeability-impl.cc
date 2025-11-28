@@ -6,7 +6,7 @@ import <vector>;
 import Ability;
 import Game;
 import Link;
-import player;
+import Player;
 
 
 PolarizeAbility::PolarizeAbility(Player* p=nullptr): Ability(p) {}
