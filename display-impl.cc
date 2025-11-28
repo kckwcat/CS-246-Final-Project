@@ -1,4 +1,4 @@
-module display;
-import player;
+module Display;
+import Player;
 import Board;
 Display::~Display(){}
