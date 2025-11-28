@@ -20,7 +20,8 @@ export class Board {
         vector<vector<int>> firewalls;
 public:
         Board();
-
+        int getR() const;
+        int getC() const;
         bool inBounds(const Pos &p) const;
 
         shared_ptr<Link> get(const Pos &p) const;

@@ -3,6 +3,7 @@ import <iostream>;
 import <vector>;
 import <memory>;
 import <string>;
+import Ability;
 import Link;
 import Player;
 import Board;

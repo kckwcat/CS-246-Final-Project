@@ -3,16 +3,18 @@ module Game;
 import <iostream>;
 import <vector>;
 import <memory>;
+import Ability;
 import Link;
 import Player;
 import Board;
 import Display;
+import GraphicDisplay;
 using namespace std;
 
 Game::Game(int nplayers) {
         for (int i=0;i<nplayers;++i) players.emplace_back(make_unique<Player>(i+1));
-        textDisplay1 = make_unique<TextDisplay>();
-        textDisplay2 = make_unique<TextDisplay>();
+        textDisplay1 = make_unique<Display>();
+        textDisplay2 = make_unique<Display>();
     }
 
     Player& Game::getCurrentPlayer() { return *players[currentPlayerIndex]; }
@@ -65,23 +67,23 @@ Game::Game(int nplayers) {
         to.r += dr; to.c += dc;
 
         // boost: one extra cell
-        if (link->boosted) { to.r += dr; to.c += dc; link->boosted = false; }
+        if (link->isBoosted()) { to.r += dr; to.c += dc; link->resetBoost();}
 
         // breach: extra 2 cells
-        if (link->breached) { to.r += 2*dr; to.c += 2*dc; link->breached = false; }
+        if (link->isBreaching()) { to.r += 2*dr; to.c += 2*dc; link->resetBreach();}
 
         // reinforce prevents move this turn
-        if (link->reinforced) {
+        if (link->isReinforced()) {
             cout << "This link is reinforced and cannot move this turn.\n";
-            link->reinforced = false; // consumes the reinforcement
+            link->resetReinforce(); // consumes the reinforcement
             return false;
         }
 
         // off-edge: allow moving off opponent start edge only
         bool offEdge = !board.inBounds(to);
         if (offEdge) {
-            int pid = p.playerID;
-            if (pid == 1 && to.r >= Board::R) {
+            int pid = p.getPlayerID();
+            if (pid == 1 && to.r >=board.getR()) {
                 // player 1 moving off bottom: download
             } else if (pid == 2 && to.r < 0) {
                 // player 2 moving off top: download
@@ -132,14 +134,15 @@ Game::Game(int nplayers) {
         if (index < 1 || index > (int)p.abilities.size()) { cout << "Invalid ability index\n"; return false; }
         Ability* a = p.abilities[index-1].get();
         if (a->hasUsed()) { cout << "Ability already used\n"; return false; }
-        bool ok = a->use(*this, args);
-        if (ok) { a->markUsed(); cout << "Ability used: " << a->name() << "\n"; }
+        //bool ok = a->use(*this, args);
+        bool ok = a->use(args);
+        if (ok) { a->markUsed(); cout << "Ability used: " << a->get_name() << "\n"; }
         else cout << "Ability use failed\n";
         return ok;
     }
 
     Player* Game::getPlayerById(int id) {
-        for (auto &pl : players) if (pl->playerID == id) return pl.get();
+        for (auto &pl : players) if (pl->getPlayerID() == id) return pl.get();
         return nullptr;
     }
 
@@ -156,4 +159,3 @@ Game::Game(int nplayers) {
             }
         }
     }
-};

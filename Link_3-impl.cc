@@ -11,7 +11,7 @@ bool Link::isVirus() const { return type == 'V'; }
     
 bool Link::isData() const  { return type == 'D'; }
 
-    
+bool Link::isBoosted() const {return boosted; }
 bool Link::isBreaching() const { return breached; }
     
         bool Link::isReinforced() const { return reinforced; }
@@ -28,6 +28,11 @@ bool Link::isBreaching() const { return breached; }
         void Link::applyRejack() { rejacked = true; }       // flag reclaimed
     
         void Link::clearTurnFlags() { boosted = false; breached = false; reinforced = false; }
+
+        void Link::resetBoost() { boosted = false;}
+        void Link::resetBreach() {breached = false;}
+        void Link::resetReinforce() {reinforced = false;}
+        void Link::resetRejack() {rejacked = false;}
 
     
         string Link::shortLabel() const {

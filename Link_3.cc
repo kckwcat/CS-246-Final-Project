@@ -22,6 +22,7 @@ export class Link {
                 bool isData() const;
 
                 //Ability usage checks
+                bool isBoosted() const;
                 bool isBreaching() const;
                 bool isReinforced() const;
                 bool isRejacked() const;
@@ -32,6 +33,11 @@ export class Link {
                 void applyReinforce();
                 void applyRejack();
                 void clearTurnFlags();
+                void resetBoost();
+                void resetBreach();
+                void resetReinforce();
+                void resetRejack();
+
 
                 // shortLabel(): returns link in the form of 'V#' or 'D#'
                 string shortLabel() const;

@@ -14,6 +14,14 @@ Board::Board() {
         }
 }
 
+int Board::getR() const{
+    return R;
+}
+
+int Board::getC() const{
+    return C;
+}
+
 bool Board::inBounds(const Pos &p) const {
     return p.r >= 0 && p.r < R && p.c >= 0 && p.c < C;
 }
