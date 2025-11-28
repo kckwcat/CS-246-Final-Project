@@ -6,7 +6,7 @@ import <vector>;
 import Ability;
 import Game;
 import Link;
-import player;
+import Player;
 
 ScanAbility::ScanAbility(Player* p=nullptr): Ability(p) {}
     string ScanAbility::name() const  { return "Scan"; }
