@@ -25,6 +25,9 @@ export class Player {
     // getLinkByIdChar(char c): returns a link by it's ID
     shared_ptr<Link> getLinkByIdChar(char ch);
     /*vector<unique_ptr<Ability>> getAbilities(); */
+    int getAbilitySize() const;
+
+    Ability* extractAbility(int index) const;
 
     void addDownloaded(shared_ptr<Link> L);
     void addAgainstMe(shared_ptr<Link> L);

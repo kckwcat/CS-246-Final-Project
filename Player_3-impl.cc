@@ -20,10 +20,16 @@ Player::Player(int id): playerID{id} {}
                 if (idx < 0 || idx >= (int)links.size()) return nullptr;
                 return links[idx];
         }
+        int Player::getAbilitySize() const{
+            return abilities.size();
+        }
 
 /*        vector<unique_ptr<Ability>> Player::getAbilities(){
                 return abilities;
         } */
+       Ability* Player::extractAbility(int index) const{
+            return abilities[index].get();
+       }
 
     void Player::addDownloaded(shared_ptr<Link> L) {
         if (!L) return;
