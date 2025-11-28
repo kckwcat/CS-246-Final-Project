@@ -6,7 +6,7 @@ import <vector>;
 import Ability;
 import Game;
 import Link;
-import player;
+import Player;
 
 ReinforceAbility::ReinforceAbility(Player* p=nullptr): Ability(p) {}
     string ReinforceAbility::name() const { return "Reinforce"; }
