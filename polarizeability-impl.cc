@@ -7,17 +7,18 @@ import Ability;
 import Game;
 import Link;
 import Player;
+using namespace std;
 
 
-PolarizeAbility::PolarizeAbility(Player* p=nullptr): Ability(p) {}
-    string PolarizeAbility::name() const { return "Polarize"; }
-    bool PolarizeAbility::use(Game &game, const vector<string>& args)  {
+PolarizeAbility::PolarizeAbility(Player* p, vector<Player*> gamePlayers): Ability("Polarize"), owner(p), players(gamePlayers) {}
+    //string PolarizeAbility::name() const { return "Polarize"; }
+    bool PolarizeAbility::use(const vector<string>& args)  {
         if (!owner || args.empty()) { cout << "Polarize needs link id\n"; return false; }
         // find link anywhere
-        for (auto &pl : game.players) {
+        for (auto &pl : players) {
             auto cand = pl->getLinkByIdChar(args[0][0]);
             if (cand) {
-                if (cand->type == TYPE_DATA) cand->type = TYPE_VIRUS; else if (cand->type == TYPE_VIRUS) cand->type = TYPE_DATA;
+                if (cand->getType() == 'D') cand->setType('V'); else if (cand->getType() == 'V') cand->setType('D');
                 cout << "Polarized\n";
                 return true;
             }

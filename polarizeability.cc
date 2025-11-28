@@ -7,9 +7,15 @@ import Ability;
 import Game;
 import Link;
 import Player;
+using namespace std;
+
 
 export struct PolarizeAbility : public Ability {
-    PolarizeAbility(Player* p=nullptr);
-    string name() const override;
-    bool use(Game &game, const vector<string>& args) override;
+    Player *owner;
+    vector<Player*> players;
+    PolarizeAbility(Player* p, vector<Player*> gamePlayers);
+    //name() returns Polarize
+    //string name() const override;
+    //use(game, args) returns true if a link has been polarized.
+    bool use(const vector<string>& args) override;
 };

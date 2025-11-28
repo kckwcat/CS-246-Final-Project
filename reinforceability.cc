@@ -4,14 +4,17 @@ import <memory>;
 import <string>;
 import <vector>;
 import Ability;
-import Game;
 import Link;
 import Player;
+using namespace std;
 
 
 
 export struct ReinforceAbility : public Ability {
+    Player *owner;
     ReinforceAbility(Player* p=nullptr);
-    string name() const override;
-    bool use(Game &game, const vector<string>& args) override;
+    //name() returns "Reinforce"
+    //string name() const override;
+    //use(args) returns true if reinforcement has a link
+    bool use(const vector<string>& args) override;
 };

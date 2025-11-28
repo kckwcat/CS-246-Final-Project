@@ -11,6 +11,10 @@ Link::Link(int s = 1, char t = 'D') : strength(s), type(t) {}
 int Link::getPlayerID() const {return playerID;}
 char Link::getType() const{return type;}
 
+void Link::setType(char c){
+        type = c;
+}
+
 bool Link::isVirus() const { return type == 'V'; }
     
 bool Link::isData() const  { return type == 'D'; }

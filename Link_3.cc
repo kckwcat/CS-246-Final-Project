@@ -19,6 +19,7 @@ export class Link {
                 Link(int strength, char type);
                 int getPlayerID() const;
                 char getType() const;
+                void setType(char c);
 
                 // Type checks
                 bool isVirus() const;

@@ -4,13 +4,14 @@ import <memory>;
 import <string>;
 import <vector>;
 import Ability;
-import Game;
 import Link;
-import player;
+import Player;
+using namespace std;
 
 
 export struct BreachAbility : public Ability {
+    Player *owner;
     BreachAbility(Player* p=nullptr);
-    string name() const override;
-    bool use(Game &game, const vector<string>& args) override;
+    //string name() const override;
+    bool use(const vector<string>& args) override;
 };

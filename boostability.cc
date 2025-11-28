@@ -4,11 +4,11 @@ import <memory>;
 import <vector>;
 import <string>;
 import Ability;
-import Game;
-import player;
+import Player;
 using namespace std;
 export struct BoostAbility : public Ability {
+    Player* owner;
     BoostAbility(Player* p=nullptr);
-    string name() const override;
-    bool use(Game &game, const vector<string>& args) override;
+    //string get_name() const;
+    bool use(const vector<string>& args) override;
 };
