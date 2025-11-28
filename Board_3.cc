@@ -4,6 +4,7 @@ import <vector>;
 import <memory>;
 import <string>;
 import Link;
+import Player;
 using namespace std;
 
 
@@ -41,5 +42,7 @@ public:
         bool findLinkPos(const std::shared_ptr<Link>& L, Pos &out) const;
 
         bool findLinkPosRaw(const Link* raw, Pos &out) const;
+
+        void displayForViewer(const Player &viewer, bool player2Lowercase) const;
 
 };

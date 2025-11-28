@@ -75,3 +75,37 @@ bool Board::findLinkPosRaw(const Link* raw, Pos &out) const {
             if (grid[r][c] && grid[r][c].get() == raw) { out = Pos(r, c); return true; }
     return false;
 }
+
+void Board::displayForViewer(const Player &viewer, bool player2Lowercase) const {
+    for (int r = 0; r < R; ++r) {
+        for (int c = 0; c < C; ++c) {
+            Pos p(r, c);
+
+            // Show firewall if present
+            char fw = firewalls[r][c];
+            if (fw != 0) {
+                cout << fw;
+                continue;
+            }
+
+            auto L = grid[r][c];
+            if (!L) {
+                cout << '.';
+                continue;
+            }
+
+            // Viewer sees own links fully, opponent links only type (or lowercase if spectate)
+            char disp = L->getType();
+
+            if (L->getPlayerID() != viewer.getPlayerID()) {
+                if (player2Lowercase)
+                    disp = tolower(disp);
+                else
+		        disp = '?';
+            }
+
+            cout << disp;
+        }
+        cout << '\n';
+    }
+}
