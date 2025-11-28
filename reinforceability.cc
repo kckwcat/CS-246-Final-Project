@@ -10,7 +10,7 @@ import player;
 
 
 
-struct ReinforceAbility : public Ability {
+export struct ReinforceAbility : public Ability {
     ReinforceAbility(Player* p=nullptr);
     string name() const override;
     bool use(Game &game, const vector<string>& args) override;
