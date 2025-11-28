@@ -1,5 +1,5 @@
 #include <bits/stdc++.h>
-export module commandParser;
+module commandParser;
 import <string>;
 import <vector>;
 import <memory>;
@@ -9,21 +9,16 @@ import <algorithm>;
 import Game;
 import Player;
 using namespace std;
-/* ------------------------
-   CommandParser
-   ------------------------ */
-export struct CommandParser {
-    Game &game;
-    bool quitFlag = false;
-    CommandParser(Game &g): game(g) {}
 
-    static vector<string> tokenize(const string &s) {
+
+
+static vector<string> CommandParser::tokenize(const string &s) {
         vector<string> out; string tok; istringstream iss(s);
         while (iss >> tok) out.push_back(tok);
         return out;
     }
 
-    void runInteractive() {
+    void CommandParser::runInteractive() {
         cout << "RAIInet running. Type 'help' for commands.\n";
         string line;
         while (!quitFlag && !game.finished) {
@@ -37,7 +32,7 @@ export struct CommandParser {
         cout << "Goodbye.\n";
     }
 
-    void runSequence(const string &filename) {
+    void CommandParser::runSequence(const string &filename) {
         ifstream ifs(filename);
         if (!ifs) { cout << "Cannot open sequence\n"; return; }
         string line;
@@ -50,7 +45,7 @@ export struct CommandParser {
         }
     }
 
-    void processLine(const string &line) {
+    void CommandParser::processLine(const string &line) {
         auto toks = tokenize(line);
         if (toks.empty()) return;
         string cmd = toks[0];
@@ -81,4 +76,3 @@ export struct CommandParser {
         }
         cout << "Unknown command\n";
     }
-};
