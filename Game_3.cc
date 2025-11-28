@@ -22,9 +22,9 @@ export class Game {
         public:
 
                 Game(int nplayers=2);
-
                 Player& getCurrentPlayer();
                 Player& otherPlayer();
+                bool getFinished() const;
                 void nextTurn();
                 void display_board();
                 void display_board_graphics();

@@ -21,6 +21,8 @@ Game::Game(int nplayers) {
     Player& Game::getCurrentPlayer() { return *players[currentPlayerIndex]; }
     Player& Game::otherPlayer() { return *players[(currentPlayerIndex+1) % players.size()]; }
 
+    bool Game::getFinished() const {return finished;}
+
     void Game::nextTurn() { currentPlayerIndex = (currentPlayerIndex + 1) % players.size(); }
 
     // display functions matching classmate names

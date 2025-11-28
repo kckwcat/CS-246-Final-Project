@@ -1,8 +1,8 @@
-#include <bits/stdc++.h>
 module commandParser;
 import <string>;
 import <vector>;
 import <memory>;
+import <fstream>;
 import <iostream>;
 import <sstream>;
 import <algorithm>;
@@ -12,7 +12,7 @@ using namespace std;
 
 
 
-static vector<string> CommandParser::tokenize(const string &s) {
+    vector<string> CommandParser::tokenize(const string &s) {
         vector<string> out; string tok; istringstream iss(s);
         while (iss >> tok) out.push_back(tok);
         return out;
@@ -21,13 +21,13 @@ static vector<string> CommandParser::tokenize(const string &s) {
     void CommandParser::runInteractive() {
         cout << "RAIInet running. Type 'help' for commands.\n";
         string line;
-        while (!quitFlag && !game.finished) {
+        while (!quitFlag && !game.getFinished()) {
             cout << game.getCurrentPlayer().getName() << "> ";
             if (!getline(cin, line)) break;
             if (line.empty()) continue;
             processLine(line);
             game.checkWinConditions();
-            if (!game.finished) game.nextTurn();
+            if (!game.getFinished()) game.nextTurn();
         }
         cout << "Goodbye.\n";
     }
@@ -36,12 +36,12 @@ static vector<string> CommandParser::tokenize(const string &s) {
         ifstream ifs(filename);
         if (!ifs) { cout << "Cannot open sequence\n"; return; }
         string line;
-        while (getline(ifs, line) && !quitFlag && !game.finished) {
+        while (getline(ifs, line) && !quitFlag && !game.getFinished()) {
             if (line.empty()) continue;
             cout << "[seq] " << line << "\n";
             processLine(line);
             game.checkWinConditions();
-            if (!game.finished) game.nextTurn();
+            if (!game.getFinished()) game.nextTurn();
         }
     }
 
