@@ -12,10 +12,12 @@ export class Link {
     bool breached = false;
     bool reinforced = false;
     bool rejacked = false;
+    int playerID;
 
         public:
 
                 Link(int strength, char type);
+                int getPlayerID() const;
 
                 // Type checks
                 bool isVirus() const;

@@ -7,6 +7,9 @@ using namespace std;
 
 Link::Link(int s = 1, char t = 'D') : strength(s), type(t) {}
 
+//Player* Link::getPlayer() const{ return owner;}
+int Link::getPlayerID() const {return playerID;}
+
 bool Link::isVirus() const { return type == 'V'; }
     
 bool Link::isData() const  { return type == 'D'; }

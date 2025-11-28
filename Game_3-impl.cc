@@ -9,12 +9,13 @@ import Player;
 import Board;
 import Display;
 import GraphicDisplay;
+import TextDisplay;
 using namespace std;
 
 Game::Game(int nplayers) {
         for (int i=0;i<nplayers;++i) players.emplace_back(make_unique<Player>(i+1));
-        textDisplay1 = make_unique<Display>();
-        textDisplay2 = make_unique<Display>();
+        textDisplay1 = make_unique<TextDisplay>();
+        textDisplay2 = make_unique<TextDisplay>();
     }
 
     Player& Game::getCurrentPlayer() { return *players[currentPlayerIndex]; }
@@ -104,14 +105,14 @@ Game::Game(int nplayers) {
             cout << "Moved " << linkId << " to (" << to.r << "," << to.c << ")\n";
             return true;
         } else {
-            if (occ->owner == &p) {
+            if (occ->getPlayerID() == p.getPlayerID()) {
                 cout << "Cannot move onto your own link\n";
                 return false;
             }
             // battle
             bool initiatorWins = link->battleVs(*occ, true);
-            Player *winner = initiatorWins ? dynamic_cast<Player *>(&p) : static_cast<Player *>(occ->owner);
-            Player *loser  = initiatorWins ? occ->owner : &p;
+            Player *winner = initiatorWins ? dynamic_cast<Player *>(&p) : static_cast<Player *>(getPlayerById(occ->getPlayerID()));
+            Player *loser  = initiatorWins ? getPlayerById(occ->getPlayerID()) : &p;
             shared_ptr<Link> winnerLink = initiatorWins ? link : occ;
             shared_ptr<Link> loserLink  = initiatorWins ? occ : link;
 
