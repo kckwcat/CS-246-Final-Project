@@ -131,8 +131,8 @@ Game::Game(int nplayers) {
     // use ability (1-based index)
     bool Game::useAbility(int index, const vector<string>& args) {
         Player &p = getCurrentPlayer();
-        if (index < 1 || index > (int)p.abilities.size()) { cout << "Invalid ability index\n"; return false; }
-        Ability* a = p.abilities[index-1].get();
+        if (index < 1 || index > p.getAbilitySize()) { cout << "Invalid ability index\n"; return false; }
+        Ability* a = p.extractAbility(index - 1);
         if (a->hasUsed()) { cout << "Ability already used\n"; return false; }
         //bool ok = a->use(*this, args);
         bool ok = a->use(args);
