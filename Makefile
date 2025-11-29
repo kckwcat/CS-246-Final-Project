@@ -9,8 +9,3 @@ $(EXEC): $(SOURCES)
         $(CXX) $(HEADERFLAGS) $(HEADERS)
         $(CXX) $(CXXFLAGS) $(SOURCES) -o $(EXEC)
 
-.PHONY: clean 
-clean:
-        rm -f $(EXEC)
-        rm -rf gcm.cache
-
