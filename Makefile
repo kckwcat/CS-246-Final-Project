@@ -6,11 +6,11 @@ HEADERS = iostream fstream vector memory sstream algorithm string
 EXEC = RAIInet
 
 $(EXEC): $(SOURCES)
-    $(CXX) $(HEADERFLAGS) $(HEADERS)
-    $(CXX) $(CXXFLAGS) $(SOURCES) -o $(EXEC)
+        $(CXX) $(HEADERFLAGS) $(HEADERS)
+        $(CXX) $(CXXFLAGS) $(SOURCES) -o $(EXEC)
 
 .PHONY: clean 
 clean:
-    rm -f $(EXEC)
-    rm -rf gcm.cache
+        rm -f $(EXEC)
+        rm -rf gcm.cache
 
