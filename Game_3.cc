@@ -20,7 +20,6 @@ export class Game {
     bool player2Lowercase = true; // user preference for display
 
         public:
-
                 Game(int nplayers=2);
                 Player& getCurrentPlayer();
                 Player& otherPlayer();
@@ -31,6 +30,8 @@ export class Game {
                 void endGame();
                 bool executeMove(char linkId, const string &dirStr);
                 bool useAbility(int index, const vector<string>& args);
+                bool getPlayer2LowerCase() const;
+                void setPlayer2LowerCase(bool player2LowerCase);
                 Player* getPlayerById(int id);
                 void checkWinConditions();
 

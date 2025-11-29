@@ -144,6 +144,14 @@ Game::Game(int nplayers) {
         return ok;
     }
 
+    bool Game::getPlayer2LowerCase() const{
+        return player2Lowercase;
+    }
+
+    void Game::setPlayer2LowerCase(bool player2LowerCase){
+        player2Lowercase = player2LowerCase;
+    }
+
     Player* Game::getPlayerById(int id) {
         for (auto &pl : players) if (pl->getPlayerID() == id) return pl.get();
         return nullptr;
